@@ -41,16 +41,16 @@ namespace WishList.Controllers
             if(ModelState.IsValid)
             {
                 var result = _userManager.CreateAsync(new ApplicationUser { UserName = model.Email, Email = model.Email }, model.Password);
-                if(result.Result.Succeeded)
+                if(!result.Result.Succeeded)
                 {
                     foreach(var error in result.Result.Errors)
                     {
                         ModelState.AddModelError("Password", error.Description);
                     }
+                    return View(model);
                 }
             }
-            
-            return View(model);
+            return RedirectToAction("Index", "Home");           
         }
     }
 }
